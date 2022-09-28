@@ -1,6 +1,7 @@
 import { SQLiteDatabase } from 'react-native-sqlite-storage'
+import { dbTableNames } from '../initData'
 import { BooksItem } from '../models'
-import { getDBConnection, tableNames } from './db-service'
+import { getDBConnection } from './db-service'
 
 export const saveBookItem = async (
   // db: SQLiteDatabase,
@@ -9,8 +10,17 @@ export const saveBookItem = async (
   const db = await getDBConnection()
 
   const insertQuery =
-    `INSERT OR REPLACE INTO ${tableNames[0].name} (b_id, b_name,b_symbol) values` +
-    bookItems.map(i => `(${i.b_id}, '${i.b_name}','${i.b_symbol}')`).join(',')
+    `INSERT OR REPLACE INTO ${dbTableNames[0].name} (${
+      bookItems[0].b_id ? ` b_id,` : ''
+    } b_name,b_symbol) values` +
+    bookItems
+      .map(
+        i =>
+          `(${bookItems[0]?.b_id ? i.b_id + ',' : ''}'${i.b_name}','${
+            i.b_symbol
+          }')`,
+      )
+      .join(',')
 
   return db.executeSql(insertQuery)
 }
@@ -19,7 +29,7 @@ export const getBookItem = async (db: SQLiteDatabase): Promise<BooksItem[]> => {
   try {
     const db = await getDBConnection()
     const booksItems: BooksItem[] = []
-    const query = `SELECT * FROM ${tableNames[0].name}`
+    const query = `SELECT * FROM ${dbTableNames[0].name}`
     const results = await db.executeSql(query)
     // console.log('db books ', results, query)
     results.forEach(result => {
@@ -41,6 +51,6 @@ export const deleteBookItem = async (
 ) => {
   const db = await getDBConnection()
 
-  const deleteQuery = `DELETE from ${tableNames[0].name} where b_id = ${id}`
+  const deleteQuery = `DELETE from ${dbTableNames[0].name} where b_id = ${id}`
   await db.executeSql(deleteQuery)
 }

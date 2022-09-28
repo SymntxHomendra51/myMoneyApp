@@ -14,6 +14,9 @@ export default function <C>({ Colors, ...args }: CommonParams<C>) {
       backgroundPrimary: {
         backgroundColor: Colors.primary,
       },
+      backgroundSecondary: {
+        backgroundColor: Colors.secondary,
+      },
       backgroundReset: {
         backgroundColor: Colors.transparent,
       },

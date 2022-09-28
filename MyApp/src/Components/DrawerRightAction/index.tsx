@@ -8,21 +8,21 @@ import { ScreenRoutes } from '@/Navigators/routes'
 
 const DrawerRightAction = props => {
   const navigation = useNavigation()
-  console.log('props', props)
+  // console.log('props', props)
   const { Layout } = useTheme()
   return (
     <View style={[Layout.rowCenter]}>
       <IconButton
-        icon="feather"
+        icon="plus"
         color={'black'}
-        size={20}
-        onPress={() => console.log('Pressed')}
+        size={25}
+        onPress={() => navigation.navigate(props.addScreen)}
       />
       <IconButton
-        icon="feather"
-        color={'red'}
-        size={20}
-        onPress={() => navigation.navigate(ScreenRoutes.addRecord)}
+        icon="sort"
+        // color={'red'}
+        size={25}
+        onPress={() => console.log('Pressed')}
       />
     </View>
   )

@@ -1,31 +1,25 @@
+import { dbInitAccounts, dbInitBooks } from '../initData'
+import { getAccountsItem, saveAccountsItem } from './accountService'
 import { getBookItem, saveBookItem } from './bookService'
-import {
-  createAllTable,
-  createTable,
-  getDBConnection,
-  getTodoItems,
-} from './db-service'
+import { createAllTable, getDBConnection } from './db-service'
 
 export const loadDataCallback = async () => {
   try {
-    const initTodos = [
-      { b_id: 0, b_name: 'go to shop', b_symbol: '$' },
-      { b_id: 2, b_name: 'money', b_symbol: '$' },
-      { b_id: 3, b_name: 'school', b_symbol: '$' },
-    ]
-    console.log('test1')
     const db = await getDBConnection()
 
     await createAllTable()
-    const storedTodoItems = await getBookItem(db)
-    if (storedTodoItems.length) {
-      console.log('storedTodoItems', storedTodoItems)
 
-      // setTodos(storedTodoItems);
+    const storedBookItems = await getBookItem(db)
+    const storedRecordItems = await getAccountsItem()
+    if (storedBookItems.length) {
+      console.log('storedBookItems', storedBookItems)
+
+      // setTodos(storedBookItems);
     } else {
-      await saveBookItem(db, initTodos)
+      await saveBookItem(dbInitBooks)
+      if (!storedRecordItems.length) await saveAccountsItem(dbInitAccounts)
+      console.log('test1')
       // setTodos(initTodos);
-      console.log('initTodos', initTodos)
     }
   } catch (error) {
     console.error(error)

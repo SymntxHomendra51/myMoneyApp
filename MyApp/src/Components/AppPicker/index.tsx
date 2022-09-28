@@ -13,14 +13,19 @@ const AppPicker = ({ label, value, onChange, data }) => {
       <Picker
         // itemStyle={{ height: 100 }}
 
-        selectedValue={value}
+        selectedValue={String(value)}
         mode="dropdown"
         onValueChange={onChange}
       >
         {data.map((item, i) => (
-          <Picker.Item key={i} label={item.label} value={item.value} />
+          <Picker.Item
+            key={i}
+            label={item.label}
+            value={String(item.value)}
+            color={item?.color}
+          />
         ))}
-        <Picker.Item key="3" label="JavaScript" value="js" />
+        {/* <Picker.Item key="3" label="JavaScript" value={6} /> */}
       </Picker>
     </View>
   )

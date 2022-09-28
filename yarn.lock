@@ -2,21 +2,3 @@
 # yarn lockfile v1
 
 
-"@gorhom/portal@1.0.14":
-  version "1.0.14"
-  resolved "https://registry.npmjs.org/@gorhom/portal/-/portal-1.0.14.tgz#1953edb76aaba80fb24021dc774550194a18e111"
-  integrity sha512-MXyL4xvCjmgaORr/rtryDNFy3kU4qUbKlwtQqqsygd0xX3mhKjOLn6mQK8wfu0RkoE0pBE0nAasRoHua+/QZ7A==
-  dependencies:
-    nanoid "^3.3.1"
-
-"@mobile-reality/react-native-select-pro@^1.11.1":
-  version "1.11.1"
-  resolved "https://registry.npmjs.org/@mobile-reality/react-native-select-pro/-/react-native-select-pro-1.11.1.tgz#e0b271bfd019a69dba8455697d82ab819cdac755"
-  integrity sha512-LdJuUBTUQyb6Rpu9Q93Hvnz9vx3JIpXxe8PjY975NM3ESheVXK7E7zYXjj07Zd6N9+gQUnFr3h1XKZ6DxwEj6w==
-  dependencies:
-    "@gorhom/portal" "1.0.14"
-
-nanoid@^3.3.1:
-  version "3.3.4"
-  resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
-  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==

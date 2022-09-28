@@ -43,6 +43,10 @@ export default function ({}: ThemeVariables) {
       flexDirection: 'row',
       alignItems: 'center',
     },
+    //Custom
+    rowFlxEnd: {
+      justifyContent: 'flex-end',
+    },
     /* Default Layouts */
     center: {
       alignItems: 'center',

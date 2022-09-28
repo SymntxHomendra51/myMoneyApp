@@ -4,14 +4,9 @@ import {
   SQLiteDatabase,
   deleteDatabase,
 } from 'react-native-sqlite-storage'
+import { dbTableNames } from '../initData'
 import { ToDoItem } from '../models'
-import { AccountsItem, BooksItem, RecordItem } from '../schema'
-
-export const tableNames = [
-  { name: 'mm_books1', schema: BooksItem },
-  { name: 'mm_records', schema: RecordItem },
-  { name: 'mm_accounts', schema: AccountsItem },
-]
+import { AccountsItem, BooksItem, RecordItem, TemplateItem } from '../schema'
 
 enablePromise(true)
 
@@ -36,17 +31,17 @@ export const createTable = async (db: SQLiteDatabase, item) => {
   const query = `CREATE TABLE IF NOT EXISTS ${item.name} (
           ${getSchemaQuery(item.schema)}
       );`
-  console.log('query', query)
+  // console.log('query', query)
 
   const result = await db.executeSql(query)
-  console.log('query result', result)
+  console.log('create table query result', result)
 }
 
 export const createAllTable = async () => {
   // await removeDatabase()
   const db = await getDBConnection()
   console.log('db', db)
-  await tableNames.forEach(async table => {
+  await dbTableNames.forEach(async table => {
     await createTable(db, table)
     console.log('table created')
   })
@@ -56,7 +51,7 @@ export const getTodoItems = async (db: SQLiteDatabase): Promise<ToDoItem[]> => {
   try {
     const todoItems: ToDoItem[] = []
     const results = await db.executeSql(
-      `SELECT rowid as id,value FROM ${tableNames[0].name}`,
+      `SELECT rowid as id,value FROM ${dbTableNames[0].name}`,
     )
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
