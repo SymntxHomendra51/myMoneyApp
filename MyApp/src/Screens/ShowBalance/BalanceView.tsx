@@ -1,19 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { useCommonData, useTheme } from '@/Hooks'
-import { getFilteredRecords } from '@/DB'
+import { getAccountsItem, getFilteredRecords } from '@/DB'
 import { format } from 'date-fns'
 import DateTitle from './DateTitle'
 import { Divider, Surface } from 'react-native-paper'
 import IText from '@/Components/IText'
-import { calcBalance } from './utils'
+import { calcBalance, mergeAccounts } from './utils'
+import dateType from '@/Utils/enums/dateType'
+import dateFormatString from '@/Utils/enums/dateFormatTypes'
 
 const BalanceView = ({
   index,
   getDate,
+  type,
 }: {
   index: number
   getDate: (arg0: number) => Date
+  type: dateType
 }) => {
   const { currentBook, acTypes } = useCommonData()
   const { Common, Layout, Gutters } = useTheme()
@@ -32,16 +36,19 @@ const BalanceView = ({
     const today = getDate(index)
     const result = await getFilteredRecords(
       currentBook,
-      'month',
-      format(today, 'MM/yyyy'),
+      type,
+      format(today, dateFormatString[type]),
     )
-    console.log('getdbdata', index)
+    const acList = await getAccountsItem(currentBook)
+    console.log('getdbdata', index, acList)
 
     const calcData = calcBalance(result)
 
-    console.log('result', result, 'calc data', calcData)
+    const completeData = mergeAccounts(calcData, acList)
 
-    setRecordState(calcData)
+    console.log('result', result, 'calc data', completeData)
+
+    setRecordState(completeData)
   }
 
   useEffect(() => {
@@ -65,7 +72,7 @@ const BalanceView = ({
         Gutters.tinyHPadding,
       ]}
     >
-      <DateTitle type={'month'} date={getDate(index)} />
+      <DateTitle type={type} date={getDate(index)} />
       {/* <Text style={{ fontSize: 30, backgroundColor: 'red', width: '100%' }}>
          {getDate(index).toLocaleDateString()} 
         hello

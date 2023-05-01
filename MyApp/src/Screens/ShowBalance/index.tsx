@@ -4,14 +4,15 @@ import PagerView from 'react-native-pager-view'
 import InfinitePager, {
   InfinitePagerImperativeApi,
 } from 'react-native-infinite-pager'
-import { addDays, addMonths, subDays } from 'date-fns'
+import { addDays, addMonths, addYears, subDays } from 'date-fns'
 import { last, range } from 'lodash'
 import customHeader from './customHeader'
 import BalanceView from './BalanceView'
+import dateType from '@/Utils/enums/dateType'
 
 const ShowBalance = ({ navigation }) => {
   const [currDay, setCurrDay] = useState(new Date())
-  const [postion, setPostion] = useState(1)
+  const [mode, setMode] = useState(dateType.month)
   const [selected, setSelected] = useState(0)
   const [days, setDays] = useState([
     subDays(currDay, 1),
@@ -28,9 +29,35 @@ const ShowBalance = ({ navigation }) => {
     // const result = arr.map(i => subDays(date, i))
     return resDate
   }
+  const getYearFromIndex = index => {
+    const resDate = addYears(currDay, index)
+    console.log('range arr', resDate.toLocaleDateString())
+
+    // const result = arr.map(i => subDays(date, i))
+    return resDate
+  }
 
   const goToCurrentPage = () => {
     pagerRef?.current?.setPage(0, { animated: true })
+  }
+
+  const toggleMode = () => {
+    setMode(state =>
+      state == dateType.month ? dateType.years : dateType.month,
+    )
+  }
+
+  const getTitle = () => {
+    switch (mode) {
+      case dateType.month:
+        return 'Monthly Balance'
+        break
+      case dateType.years:
+        return 'Yearly Balance'
+      default:
+        return 'Set title'
+        break
+    }
   }
 
   useEffect(() => {
@@ -41,20 +68,30 @@ const ShowBalance = ({ navigation }) => {
       headerRight: () =>
         customHeader(selected)?.headerRight({
           firstBtn: goToCurrentPage,
-          scndBtn: selected
-            ? () => console.log('selected')
-            : () => console.log('not selected'),
+          scndBtn: toggleMode,
           thrdBtn: () => console.log('hello'),
         }),
     })
   }, [])
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: getTitle(),
+    })
+  }, [mode])
 
   return (
     <View style={styles.flex}>
       <InfinitePager
         ref={pagerRef}
         PageComponent={props => (
-          <BalanceView index={props.index} getDate={getMonthFromIndex} />
+          <BalanceView
+            index={props.index}
+            getDate={
+              mode == dateType.month ? getMonthFromIndex : getYearFromIndex
+            }
+            type={mode}
+          />
         )}
         onPageChange={e => console.log('onpagechagen', e)}
         style={styles.flex}
